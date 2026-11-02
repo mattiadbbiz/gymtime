@@ -35,7 +35,7 @@ export async function statoAllenamento(env, io) {
   const [g, scheda, ultima] = await Promise.all([
     env.DB.prepare('SELECT id, stato, giorno_posizione, nome_giorno FROM giornate WHERE atleta_id = ? AND data = ?').bind(io.id, data).first(),
     caricaScheda(env, 'atleta_id = ? AND archiviata = 0', io.id),
-    env.DB.prepare(`SELECT giorno_posizione FROM giornate WHERE atleta_id = ? AND data < ? ORDER BY data DESC LIMIT 1`).bind(io.id, data).first(),
+    env.DB.prepare(`SELECT giorno_posizione FROM giornate WHERE atleta_id = ? AND data < ? AND giorno_posizione >= 0 ORDER BY data DESC LIMIT 1`).bind(io.id, data).first(),
   ]);
   if (!scheda) return json({ oggi: data, giornata: g || null, scheda: null });
   const { settimana, concluso } = settimanaDi(scheda, data);

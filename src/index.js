@@ -9,6 +9,7 @@ import * as D from './domande.js';
 import * as I from './importa.js';
 import * as M from './mobilita.js';
 import * as L from './sessioni-libere.js';
+import * as G from './giornate-singole.js';
 
 async function limite(env, chiave) {
   if (!env.LIMITE_ACCESSI) return;
@@ -86,6 +87,19 @@ async function api(request, env, url) {
     if (m === 'DELETE') return S.eliminaImportata(env, io, +r[1]);
   }
   if ((r = p.match(/^\/api\/storico-schede\/scheda\/(\d+)\/attiva$/)) && m === 'POST') return S.copiaComeAttiva(request, env, io, +r[1]);
+
+  // Giornate singole: fuori dalla scheda, avviabili da Allena e aggiungibili alla scheda attiva
+  if (p === '/api/giornate-singole' && m === 'GET') return G.elenco(env, io);
+  if (p === '/api/giornate-singole' && m === 'POST') return G.crea(request, env, io);
+  if (p === '/api/giornate-singole/gestione' && m === 'GET') return G.gestione(env, io);
+  if ((r = p.match(/^\/api\/giornate-singole\/(\d+)$/))) {
+    if (m === 'GET') return G.leggi(env, io, +r[1]);
+    if (m === 'PUT') return G.modifica(request, env, io, +r[1]);
+    if (m === 'DELETE') return G.elimina(env, io, +r[1]);
+  }
+  if ((r = p.match(/^\/api\/giornate-singole\/(\d+)\/avvia$/)) && m === 'POST') return G.avvia(env, io, +r[1]);
+  if ((r = p.match(/^\/api\/giornate-singole\/(\d+)\/scheda$/)) && m === 'POST') return G.inScheda(env, io, +r[1]);
+  if ((r = p.match(/^\/api\/giornate\/(\d+)\/rifai$/)) && m === 'POST') return G.rifai(env, io, +r[1]);
 
   // Allenamento
   if (p === '/api/allena' && m === 'GET') return A.statoAllenamento(env, io);

@@ -1,10 +1,33 @@
 // GymTime · giornate singole: schermata Allena (scheda, giornate singole, rifai), anteprime ed editor del coach.
 // Si importa in app.js PRIMA di atleta.js: la sua rotta #/allena prende il posto di quella di atleta.js.
+// Gli stili sono dentro questo file.
 // Restano in atleta.js l'anteprima dei giorni della scheda (#/allena/giorno/N) e il flusso (#/allena/g/ID).
 import { api, esc, dataCorta } from './api.js';
 import { stato, app, rotta, pagina, attesa, toast, chiedi, finestra, vai } from './ui.js';
 import { ominoSVG, animazioneVariante } from './omino.js';
 import { MODALITA, CAMPI, etichetta, rxTesto, testoVariante, durata, norm } from './regole.js';
+
+// Stili di questa sezione: si aggiungono da soli, gymtime.css non va toccato
+const STILE = `.gs-sezione{margin:26px 0 10px}.gs-sezione h2{font-size:26px;margin:0}.gs-sezione p{margin:2px 0 0}
+.gs-crea{display:grid;gap:10px;margin:4px 0 6px}
+.gs-azioni{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0}
+.gs-dati{display:grid;gap:12px}
+.gs-es{display:grid;gap:10px;background:var(--surface,#fff);border:1px solid var(--line,#e6deda);border-radius:14px;padding:12px;margin:10px 0}
+.gs-es-testa{display:flex;align-items:center;gap:10px}
+.gs-es-testa .mini{width:44px;height:50px;flex-shrink:0;background:var(--surface-2,#f1eae4);border-radius:9px}
+.gs-es-testa .mini svg{width:100%;height:100%}
+.gs-es-nome{flex:1;min-width:0;display:grid;gap:4px}.gs-es-nome b{overflow-wrap:anywhere}
+.gs-es-tasti{display:flex;gap:4px;flex-shrink:0}
+.gs-campi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gs-campi .gs-largo{grid-column:1/-1}
+.gs-aggiungi{width:100%;margin-top:6px}
+.gs-scelta{display:grid;gap:12px}
+.gs-risultati{max-height:55dvh;overflow:auto;margin:0}`;
+if (!document.getElementById('gs-stile')) {
+  const s = document.createElement('style');
+  s.id = 'gs-stile';
+  s.textContent = STILE;
+  document.head.appendChild(s);
+}
 
 const PREDEFINITI = { setrep: { serie: 3, rip: 10 }, emom: { minuti: 10, rip: 5 }, amrap: { minuti: 10 }, tempo: { serie: 3, secondi: 30 }, cardio: { serie: 1, secondi: 600 }, rt: { rip: 50 }, ladder: { da: 1, a: 5, passo: 1 }, free: { testo: '' } };
 const gestisce = () => stato.io.ruolo !== 'atleta';
