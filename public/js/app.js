@@ -2,6 +2,7 @@
 import { api, esc, iniziale, RUOLI, quandoNonAutorizzato } from './api.js';
 import { stato, app, rotta, impostaBase, mostra, vai, pagina, toast, chiedi, campoPassword, attivaMostraPassword } from './ui.js';
 import { montaOmino } from './omino.js';
+import './giornate-singole.js';
 import './atleta.js';
 import './coach.js';
 import './mobilita-sessione.js';
